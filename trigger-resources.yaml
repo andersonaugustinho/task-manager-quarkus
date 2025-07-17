@@ -1,0 +1,56 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: github-event-listener
+spec:
+  serviceAccountName: pipeline # Usa a ServiceAccount que você criou (a 'pipeline')
+  triggers:
+    - name: github-push
+      bindings:
+        - ref: github-push-binding
+      template:
+        ref: github-push-template
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: github-push-binding
+spec:
+  # Captura o URL do repositório e o SHA do commit do payload do GitHub
+  params:
+    - name: git-url
+      value: $(body.repository.html_url)
+    - name: git-revision
+      value: $(body.head_commit.id) # Usa o SHA do commit que disparou o push
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: github-push-template
+spec:
+  params:
+    - name: git-url
+    - name: git-revision
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: quarkus-app-pipeline-run- # Prefixo para o nome das execuções do pipeline
+      spec:
+        pipelineRef:
+          name: quarkus-cicd-pipeline # Referencia o Pipeline que definimos no arquivo anterior
+        serviceAccountName: pipeline # Usa a ServiceAccount 'pipeline' para executar o PipelineRun
+        workspaces:
+          - name: shared-workspace
+            volumeClaimTemplate: # Cria um volume temporário para o workspace de cada PipelineRun
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi # 1GB de armazenamento para o workspace do build
+        params:
+          - name: git-url
+            value: $(params.git-url)
+          - name: git-revision
+            value: $(params.git-revision)
