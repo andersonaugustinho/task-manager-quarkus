@@ -4,7 +4,7 @@
       name: quarkus-cicd-pipeline
     spec:
       workspaces:
-        - name: shared-workspace # Workspace para compartilhar entre Tasks (ex: código fonte)
+        - name: shared-workspace 
       params:
         - name: git-url
           type: string
@@ -16,16 +16,16 @@
       tasks:
         - name: build-and-deploy-app
           taskRef:
-            name: s2i-java-build-and-deploy # Referencia a Task que definimos acima
+            name: s2i-java-build-and-deploy 
           workspaces:
             - name: source
-              workspace: shared-workspace # Mapeia o workspace da Task para o workspace do Pipeline
+              workspace: shared-workspace 
           params:
             - name: git-url
               value: $(params.git-url)
             - name: git-revision
               value: $(params.git-revision)
             - name: image-name
-              value: image-registry.openshift-image-registry.svc:5000/andersonaugustinho-dev/task-manager # <<<<<<< CORRIJA ESTA SEÇÃO
+              value: image-registry.openshift-image-registry.svc:5000/andersonaugustinho-dev/task-manager 
             - name: app-name
-              value: task-manager # <<<<<<< NOME DO SEU DEPLOYMENTCONFIG NO OpenShift
+              value: task-manager 
