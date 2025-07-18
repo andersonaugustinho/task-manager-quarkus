@@ -43,12 +43,7 @@ spec:
         workspaces:
           - name: shared-workspace
             volumeClaimTemplate: # Cria um volume temporário para o workspace de cada PipelineRun
-              spec:
-                accessModes:
-                  - ReadWriteOnce
-                resources:
-                  requests:
-                    storage: 500Mi # 1GB de armazenamento para o workspace do build
+              emptyDir: {}
         params:
           - name: git-url
             value: $(params.git-url)
