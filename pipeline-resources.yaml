@@ -21,7 +21,7 @@ spec:
       description: Name of the OpenShift DeploymentConfig to update
   steps:
     - name: s2i-build
-      image: registry.redhat.io/openjdk/openjdk-17-rhel8:latest
+      image: registry.redhat.io/rhel8/s2i-java:1-17
       workingdir: $(workspaces.source.path)
       command: ["/bin/bash", "-c"]
       args:
