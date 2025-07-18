@@ -21,12 +21,12 @@ spec:
       description: Name of the OpenShift DeploymentConfig to update
   steps:
     - name: s2i-build
-      image: registry.redhat.io/openshift-pipelines/s2i-java-container-image-rhel8:1.0
+      image: registry.redhat.io/openjdk/openjdk-17-rhel8:latest
       workingdir: $(workspaces.source.path)
       command: ["/bin/bash", "-c"]
       args:
         - |
-          s2i build $(params.git-url) --context-dir=. --ref=$(params.git-revision) -e MAVEN_OPTS="-Xmx1024m" -Dquarkus.profile=prod -Dquarkus.package.type=fast-jar $(params.image-name):latest
+          s2i build $(params.git-url) --context-dir=. --ref=$(params.git-revision) -e MAVEN_OPTS="-Xmx512m" -Dquarkus.profile=prod -Dquarkus.package.type=fast-jar $(params.image-name):latest
       env:
         - name: BUILDER_VERSION
           value: "latest"
