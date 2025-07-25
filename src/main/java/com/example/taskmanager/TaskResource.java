@@ -27,7 +27,7 @@ public class TaskResource {
     @Transactional // Ensures database operation is transactional
     public Response createTask(Task task) {
         if (task.description == null || task.description.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Description cannot be empty. Please provide a valid task. xxxxx yyyy zzzzz").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Description cannot be empty. Please provide a valid task. xxxxx yyyy zzzzz aaaaaa").build();
         }
         // Garante que o ID não seja definido externamente ao criar uma nova tarefa
         if (task.id != null) {
