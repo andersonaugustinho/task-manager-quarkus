@@ -13,11 +13,11 @@ spec:
     tty: true
     resources:
       requests:
-        memory: "1Gi"
+        memory: "256Mi"
         cpu: "500m"
       limits:
-        memory: "2Gi"
-        cpu: "1"
+        memory: "512Mi"
+        cpu: "250m"
   - name: oc-cli
     image: quay.io/openshift/origin-cli:latest
     command: ['cat']
